@@ -148,7 +148,7 @@ def chat():
                 "model": ekm_model,
                 "messages": st.session_state.messages,
             }
-            response = requests.post(BACKEND_URL, json=payload, timeout=REQUEST_TIMEOUT)
+            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=REQUEST_TIMEOUT)
             if response.status_code == 200:
                 return response.json().get("res", "⚠️ Unexpected response format.")
             elif response.status_code == 429:
