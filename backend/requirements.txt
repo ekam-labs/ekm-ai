@@ -3,3 +3,4 @@ slowapi
 pydantic
 python-dotenv
 requests
+uvicorn
