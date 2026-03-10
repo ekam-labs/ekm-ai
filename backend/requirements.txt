@@ -1,0 +1,5 @@
+fastapi
+slowapi
+pydantic
+python-dotenv
+requests
