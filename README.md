@@ -1,5 +1,9 @@
 # EKM AI
 
+[![Python](https://img.shields.io/badge/Python-3.10+-blue)]()
+[![License](https://img.shields.io/badge/License-MIT-green)]()
+[![Live](https://img.shields.io/badge/Live-Streamlit-orange)](https://ekm-ai.streamlit.app)
+
 EKM AI is a lightweight AI chat platform that allows users to interact with multiple language models through a single interface.
 
 It uses a FastAPI backend to route requests to different AI providers and a Streamlit interface for chatting with the models. The project is designed to stay simple, developer-friendly, and easy to extend.
@@ -13,7 +17,7 @@ The project is currently in an early development stage. Expect updates and impro
 ## Resources
 
 Live Application  
-just wait a min
+https://ekm-ai.streamlit.app
 
 Project Walkthrough  
 https://youtu.be/9mhf7VWo_8o
