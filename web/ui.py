@@ -433,7 +433,7 @@ def about():
     with partner_col2:
         st.markdown("### APW")
         st.image("https://yt3.googleusercontent.com/L4Uq1N633hzcnBSTE442q6BVQeiuSAO8qDfI6KDy8R9LrGTsuBItst5a83qkRaNdOJOUYhP9_bA=s160-c-k-c0x00ffffff-no-rj", width=120)
-        st.link_button("📺 YouTube", "https://youtube.com/apw", use_container_width=True)
+        st.link_button("📺 YouTube", "https://youtube.com/@androidportworld", use_container_width=True)
         st.link_button("📢 Telegram", "https://t.me/apw", use_container_width=True)
 
     st.divider()
@@ -475,7 +475,7 @@ def about():
                     
     Contribute code, open issues, or simply give us a ⭐ to boost visibility!
     """)
-        st.link_button("✨ GitHub Visit", "https://github.com/ekm-labs")
+        st.link_button("✨ GitHub Visit", "https://github.com/ekam-labs")
 
         st.markdown("---")
 
