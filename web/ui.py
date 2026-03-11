@@ -391,7 +391,7 @@ def home():
                     
     Contribute code, open issues, or simply give us a ⭐ to boost visibility!
     """)
-        st.link_button("✨ GitHub Visit", "https://github.com/ekm-labs")
+        st.link_button("✨ GitHub Visit", "https://github.com/ekam-labs")
 
         st.markdown("___")  # divider
 
