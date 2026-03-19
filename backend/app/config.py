@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,7 +13,7 @@ ALLOWED_MODELS = {
     "openai/gpt-oss-120b",
     "moonshotai/kimi-k2-instruct-0905",
     "llama_scout",
-    "qwen"
+    "qwen",
 }
 
 GROQ_API = os.getenv("GROQ_API")

@@ -1,13 +1,11 @@
-from fastapi import FastAPI, HTTPException, Header, Request
-from fastapi.responses import JSONResponse
-
-from slowapi.errors import RateLimitExceeded
-from slowapi.middleware import SlowAPIMiddleware
-from slowapi import Limiter
-from slowapi.util import get_remote_address
-
 from app.schemas import ChatRequest
 from app.services.router import route_model
+from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi.responses import JSONResponse
+from slowapi import Limiter
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.util import get_remote_address
 
 app = FastAPI()
 
@@ -15,6 +13,7 @@ app = FastAPI()
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_middleware(SlowAPIMiddleware)
+
 
 # Custom Rate Limit Handler
 @app.exception_handler(RateLimitExceeded)
@@ -32,7 +31,7 @@ async def chat(
     request: Request,
     req: ChatRequest,
 ):
-    
+
     try:
         reply = route_model(
             req.model,

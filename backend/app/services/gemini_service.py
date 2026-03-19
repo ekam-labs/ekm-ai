@@ -1,6 +1,6 @@
-import json
 import requests
-from app.config import GOOGLE_API, GEMINI3_FLASH, GEMINI25_FLASH, GEMMA3, REQUEST_TIMEOUT
+from app.config import (GEMINI3_FLASH, GEMINI25_FLASH, GEMMA3, GOOGLE_API,
+                        REQUEST_TIMEOUT)
 
 
 def call_gemini(model_pick, messages, identity_prompt):

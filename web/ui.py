@@ -1,23 +1,28 @@
-import streamlit as st
+import os
+import random
+import sys
 from datetime import datetime
-import os, sys
-HERE = os.path.abspath(os.path.dirname(__file__))      
-PROJECT_ROOT = os.path.abspath(os.path.join(HERE, ".."))  
+
+import streamlit as st
+
+HERE = os.path.abspath(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.abspath(os.path.join(HERE, ".."))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
-from backend.app.config import REQUEST_TIMEOUT
-from backend.app.config import ALLOWED_MODELS
+from backend.app.config import ALLOWED_MODELS, REQUEST_TIMEOUT
 
 MODEL_CHOICES = sorted(list(ALLOWED_MODELS))
 
-import requests
-import re
 import html
+import re
+
+import requests
 
 st.set_page_config(
     page_title="ekm AI – Multi Model Chat",
     page_icon="😎",
 )
+
 
 def handle_thinking_tags(text, show):
     if show:
@@ -33,7 +38,8 @@ def handle_thinking_tags(text, show):
 
 def chat():
     # --- Typing Header ---
-    st.markdown("""
+    st.markdown(
+        """
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap');
 
@@ -80,19 +86,28 @@ def chat():
             <div class="typewriter">Welcome to The ekm AI!</div>
             <div class="beta">β</div>
         </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
     st.markdown("---")
 
     # --- API URL ---
     BACKEND_URL = os.environ.get(
-    "BACKEND_URL",
-    "http://127.0.0.1:8000/chat"  # fallback for local dev
-)
+        "BACKEND_URL", "http://127.0.0.1:8000/chat"  # fallback for local dev
+    )
     # --- Sidebar ---
     st.sidebar.title("🎛️ Quick Actions")
 
     # Model selection
-    ekm_model = st.sidebar.selectbox("🧠 Choose Model", MODEL_CHOICES)
+    if "selected_model" not in st.session_state:
+        st.session_state.selected_model = random.choice(MODEL_CHOICES)
+
+    ekm_model = st.sidebar.selectbox(
+        "🧠 Choose Model",
+        MODEL_CHOICES,
+        index=MODEL_CHOICES.index(st.session_state.selected_model),
+    )
+    st.session_state.selected_model = ekm_model
     show_thinking = st.sidebar.checkbox(" Show AI Thinking", value=False)
 
     # Divider
@@ -110,12 +125,14 @@ def chat():
     # Help & Feedback section
     with st.sidebar.expander("💬 Help & Feedback", expanded=False):
         st.markdown("💡 **Tips for Best Results:**")
-        st.markdown("- Keep your prompt short and clear.\n- Avoid long or vague input.\n- You can switch models anytime.")
+        st.markdown(
+            "- Keep your prompt short and clear.\n- Avoid long or vague input.\n- You can switch models anytime."
+        )
         st.markdown("📩 [Send Feedback](https://t.me/ekam_ai)")
 
     # Support Us section (separate expander)
     with st.sidebar.expander("💖 Support Us", expanded=False):
-         st.markdown("""
+        st.markdown("""
     _Love what you see?_ 
     Keep ekm AI thriving with your support.  
     - **Ko-fi**: [Support us here](https://ko-fi.com/yourpage)  
@@ -148,17 +165,19 @@ def chat():
                 "model": ekm_model,
                 "messages": st.session_state.messages,
             }
-            response = requests.post(f"{BACKEND_URL}/chat", json=payload, timeout=REQUEST_TIMEOUT)
+            response = requests.post(
+                f"{BACKEND_URL}/chat", json=payload, timeout=REQUEST_TIMEOUT
+            )
             if response.status_code == 200:
                 return response.json().get("res", "⚠️ Unexpected response format.")
             elif response.status_code == 429:
                 return "⚠️ Too many requests — slow down. (429)"
             else:
                 return f"❌ Error {response.status_code}: {response.text}"
-            
+
         except requests.exceptions.Timeout:
             return "❌ Request timed out. Try again later."
-    
+
         except Exception as e:
             return f"❌ Failed to reach backend: {e}"
 
@@ -168,8 +187,8 @@ def chat():
 
     if "busy" not in st.session_state:
         st.session_state.busy = False
-    
-    prompt = st.chat_input("Ask..?", disabled=st.session_state.busy)    
+
+    prompt = st.chat_input("Ask..?", disabled=st.session_state.busy)
 
     # --- Render Chat History ---
     for msg in st.session_state.messages:
@@ -189,8 +208,12 @@ def chat():
                     user_req=prompt,
                     ekm_model=ekm_model,
                 )
-                st.markdown(handle_thinking_tags(final_res, show_thinking), unsafe_allow_html=True) # can be risky
-                st.markdown(f"""
+                st.markdown(
+                    handle_thinking_tags(final_res, show_thinking),
+                    unsafe_allow_html=True,
+                )  # can be risky
+                st.markdown(
+                    f"""
     <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
         <span style="font-size: 12px; color: #bbb;">
             • <b>Model:</b>
@@ -200,14 +223,14 @@ def chat():
         </span>
         <span style="font-size: 11px; color: #777;">{datetime.now().strftime("%H:%M")}</span>
     </div>
-""", unsafe_allow_html=True)
+""",
+                    unsafe_allow_html=True,
+                )
 
         # --- Save assistant reply ---
-        st.session_state.messages.append({
-            "role": "assistant",
-            "content": final_res
-        })
+        st.session_state.messages.append({"role": "assistant", "content": final_res})
         st.session_state.busy = False
+
 
 # --- Session Default ---
 if "page" not in st.session_state:
@@ -218,9 +241,11 @@ if "page" not in st.session_state:
 def navigate(page_name):
     st.session_state.page = page_name
 
+
 # --- Page functions ---
 def home():
-    st.markdown("""
+    st.markdown(
+        """
         <style>
             .hero-title {
                 font-size: 2.5em;
@@ -298,14 +323,23 @@ def home():
                 font-size: 0.9em;
             }
         </style>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )
 
     # HERO SECTION
-    st.markdown("<div class='hero-title'>🚀 ekm AI – Access multiple models without login</div>", unsafe_allow_html=True)
-    st.markdown("<div class='hero-subtitle'>Start instantly. No sign-up, no data stored. Just ask.</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='hero-title'>🚀 ekm AI – Access multiple models without login</div>",
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        "<div class='hero-subtitle'>Start instantly. No sign-up, no data stored. Just ask.</div>",
+        unsafe_allow_html=True,
+    )
 
     # VIDEO SECTION
-    st.markdown("""
+    st.markdown(
+        """
         <div class="video-container">
             <div class="rounded-video">
                 <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9mhf7VWo_8o"
@@ -314,54 +348,68 @@ def home():
                     allowfullscreen></iframe>
             </div>
         </div>
-    """, unsafe_allow_html=True)
-   
+    """,
+        unsafe_allow_html=True,
+    )
+
     st.markdown("####")
 
-   # CTA BUTTON CENTERED
+    # CTA BUTTON CENTERED
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("💬 Let's Chat with ekm AI", key="cta-btn"):
             navigate("chat")
 
-    st.markdown("####")        
+    st.markdown("####")
 
     # FEATURES SECTION
     st.markdown("### 🔍 What Makes ekm AI Different?")
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown("""
+        st.markdown(
+            """
             <div class="glass-box">
                 🧠 <b>Private by Design</b><br>
                 Your chats stay on this session. No data is stored or tracked.
             </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
     with col2:
-        st.markdown("""
+        st.markdown(
+            """
             <div class="glass-box">
                 🧬 <b>Multiple AI Models</b><br>
                 Switch between different large language models in one interface.
             </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
     with col3:
-        st.markdown("""
+        st.markdown(
+            """
             <div class="glass-box">
                 🚪 <b>No Sign-Up Required</b><br>
                 Open ekm AI and start chatting — no accounts or barriers.
             </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
     # FOOTER
-    st.markdown("""
+    st.markdown(
+        """
         <div class="footer-text">
             Built with 🧠 and ❤️ by ekm AI Devs.  
             <br>Fully open-source. Contributions welcome.
         </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+        unsafe_allow_html=True,
+    )
+
     with st.sidebar:
         st.title("🏠 Home")
 
@@ -403,6 +451,7 @@ def home():
             if st.button("ℹ️ About Us"):
                 navigate("about")
 
+
 def about():
     st.title("👨‍💻 About Us")
 
@@ -425,15 +474,29 @@ def about():
     # --- Partner: TechLoop ---
     with partner_col1:
         st.markdown("### TXXL")
-        st.image("https://yt3.googleusercontent.com/_YQkfoRHZqVCixmfk2n_hlSHMjJDbt7hpjXc4uJxvn9Fn6eQx_uFbaJxyLsrX85VeazBFeXzFA=s160-c-k-c0x00ffffff-no-rj", width=120)
-        st.link_button("📺 YouTube", "https://youtube.com/@txlextended", use_container_width=True)
-        st.link_button("📢 Telegram", "https://t.me/txlextended", use_container_width=True)
+        st.image(
+            "https://yt3.googleusercontent.com/_YQkfoRHZqVCixmfk2n_hlSHMjJDbt7hpjXc4uJxvn9Fn6eQx_uFbaJxyLsrX85VeazBFeXzFA=s160-c-k-c0x00ffffff-no-rj",
+            width=120,
+        )
+        st.link_button(
+            "📺 YouTube", "https://youtube.com/@txlextended", use_container_width=True
+        )
+        st.link_button(
+            "📢 Telegram", "https://t.me/txlextended", use_container_width=True
+        )
 
     # --- Partner: APW ---
     with partner_col2:
         st.markdown("### APW")
-        st.image("https://yt3.googleusercontent.com/L4Uq1N633hzcnBSTE442q6BVQeiuSAO8qDfI6KDy8R9LrGTsuBItst5a83qkRaNdOJOUYhP9_bA=s160-c-k-c0x00ffffff-no-rj", width=120)
-        st.link_button("📺 YouTube", "https://youtube.com/@androidportworld", use_container_width=True)
+        st.image(
+            "https://yt3.googleusercontent.com/L4Uq1N633hzcnBSTE442q6BVQeiuSAO8qDfI6KDy8R9LrGTsuBItst5a83qkRaNdOJOUYhP9_bA=s160-c-k-c0x00ffffff-no-rj",
+            width=120,
+        )
+        st.link_button(
+            "📺 YouTube",
+            "https://youtube.com/@androidportworld",
+            use_container_width=True,
+        )
         st.link_button("📢 Telegram", "https://t.me/apw", use_container_width=True)
 
     st.divider()
@@ -442,7 +505,9 @@ def about():
     contact_col1, contact_col2 = st.columns([1, 1])
 
     with contact_col1:
-        st.link_button("📢 YouTube", "https://youtube.com/@ekamlabs", use_container_width=True)
+        st.link_button(
+            "📢 YouTube", "https://youtube.com/@ekamlabs", use_container_width=True
+        )
 
     with contact_col2:
         st.link_button("📢 Telegram", "https://t.me/ekam_ai", use_container_width=True)
@@ -485,7 +550,7 @@ def about():
         st.link_button("⬇️ Download on Android", "https://your-apk-link.com")
 
 
-  # --- RENDER CURRENT PAGE ---
+# --- RENDER CURRENT PAGE ---
 if st.session_state.page == "home":
     home()
 elif st.session_state.page == "chat":

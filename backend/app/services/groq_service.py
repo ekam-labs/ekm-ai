@@ -1,5 +1,6 @@
 import requests
-from app.config import GROQ_API, GPT_MODEL, MOONSHOT, LLAMA_SCOUT, QWEN, REQUEST_TIMEOUT
+from app.config import (GPT_MODEL, GROQ_API, LLAMA_SCOUT, MOONSHOT, QWEN,
+                        REQUEST_TIMEOUT)
 
 
 def call_groq(model_pick, messages, identity_prompt):
@@ -19,10 +20,7 @@ def call_groq(model_pick, messages, identity_prompt):
 
     injected_messages = [{"role": "system", "content": identity_prompt}] + messages
 
-    payload = {
-        "model": selected_model,
-        "messages": injected_messages
-    }
+    payload = {"model": selected_model, "messages": injected_messages}
 
     headers = {
         "Authorization": f"Bearer {GROQ_API}",
