@@ -2,6 +2,8 @@ import os
 import random
 import sys
 from datetime import datetime
+from voice_input import voice_to_chat
+from api_client import fetch_ekm_data
 
 import streamlit as st
 
@@ -93,7 +95,7 @@ def chat():
 
     # --- API URL ---
     BACKEND_URL = os.environ.get(
-        "BACKEND_URL", "http://127.0.0.1:8000/chat"  # fallback for local dev
+        "BACKEND_URL", "http://127.0.0.1:8000"  # fallback for local dev
     )
     # --- Sidebar ---
     st.sidebar.title("🎛️ Quick Actions")
@@ -109,6 +111,8 @@ def chat():
     )
     st.session_state.selected_model = ekm_model
     show_thinking = st.sidebar.checkbox(" Show AI Thinking", value=False)
+    with st.sidebar:
+        voice_to_chat(BACKEND_URL, REQUEST_TIMEOUT, fetch_ekm_data, ekm_model)
 
     # Divider
     st.sidebar.markdown("---")
@@ -158,29 +162,6 @@ def chat():
         if st.button("ℹ️ About"):
             navigate("about")
 
-    # --- Fetching from Backend ---
-    def fetch_ekm_data(user_req: str, ekm_model: str):
-        try:
-            payload = {
-                "model": ekm_model,
-                "messages": st.session_state.messages,
-            }
-            response = requests.post(
-                f"{BACKEND_URL}/chat", json=payload, timeout=REQUEST_TIMEOUT
-            )
-            if response.status_code == 200:
-                return response.json().get("res", "⚠️ Unexpected response format.")
-            elif response.status_code == 429:
-                return "⚠️ Too many requests — slow down. (429)"
-            else:
-                return f"❌ Error {response.status_code}: {response.text}"
-
-        except requests.exceptions.Timeout:
-            return "❌ Request timed out. Try again later."
-
-        except Exception as e:
-            return f"❌ Failed to reach backend: {e}"
-
     # --- Session Memory ---
     if "messages" not in st.session_state:
         st.session_state.messages = []
@@ -204,12 +185,14 @@ def chat():
 
         with st.chat_message("assistant"):
             with st.spinner("thinking...", show_time=True):
-                final_res = fetch_ekm_data(
-                    user_req=prompt,
-                    ekm_model=ekm_model,
+                reply = fetch_ekm_data(
+                BACKEND_URL,
+                REQUEST_TIMEOUT,
+                ekm_model,
+                st.session_state.messages,
                 )
                 st.markdown(
-                    handle_thinking_tags(final_res, show_thinking),
+                    handle_thinking_tags(reply, show_thinking),
                     unsafe_allow_html=True,
                 )  # can be risky
                 st.markdown(
@@ -228,7 +211,8 @@ def chat():
                 )
 
         # --- Save assistant reply ---
-        st.session_state.messages.append({"role": "assistant", "content": final_res})
+        st.session_state.messages.append({"role": "assistant", "content": reply})
+        st.session_state.voice_processed = False
         st.session_state.busy = False
 
 

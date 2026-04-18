@@ -6,6 +6,8 @@ from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.util import get_remote_address
+from fastapi import UploadFile, File
+from app.services.speech_services import transcribe_audio
 
 app = FastAPI()
 
@@ -41,3 +43,12 @@ async def chat(
 
     except Exception:
         raise HTTPException(status_code=500, detail="Internal server error")
+
+@app.post("/voice")
+async def voice(file: UploadFile = File(...)):
+
+    audio_bytes = await file.read()
+
+    transcript = transcribe_audio(audio_bytes)
+
+    return {"text": transcript}
