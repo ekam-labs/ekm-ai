@@ -17,7 +17,6 @@ ALLOWED_MODELS = {
 
 GROQ_API = os.getenv("GROQ_API")
 GPT_MODEL = os.getenv("GPT_MODEL")
-MOONSHOT = os.getenv("MOONSHOT")
 
 GOOGLE_API = os.getenv("GOOGLE_API")
 GEMINI3_FLASH = os.getenv("GEMINI3_FLASH")

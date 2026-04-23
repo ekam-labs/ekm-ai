@@ -8,7 +8,7 @@ EKM AI is a lightweight AI chat platform that allows users to interact with mult
 
 It uses a FastAPI backend to route requests to different AI providers and a Streamlit interface for chatting with the models. The project is designed to stay simple, developer-friendly, and easy to extend.
 
->**Project Status:** Dev Preview (v0.1)
+>**Project Status:** Dev Preview (v0.2)
 
 The project is currently in an early development stage. Expect updates and improvements as development continues.
 

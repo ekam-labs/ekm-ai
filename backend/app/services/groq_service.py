@@ -1,5 +1,5 @@
 import requests
-from app.config import (GPT_MODEL, GROQ_API, LLAMA_SCOUT, MOONSHOT, QWEN,
+from app.config import (GPT_MODEL, GROQ_API, LLAMA_SCOUT, QWEN,
                         REQUEST_TIMEOUT)
 
 

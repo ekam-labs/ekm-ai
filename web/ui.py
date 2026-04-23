@@ -18,8 +18,6 @@ MODEL_CHOICES = sorted(list(ALLOWED_MODELS))
 import html
 import re
 
-import requests
-
 st.set_page_config(
     page_title="ekm AI – Multi Model Chat",
     page_icon="😎",
