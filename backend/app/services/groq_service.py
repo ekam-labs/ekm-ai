@@ -9,8 +9,6 @@ def call_groq(model_pick, messages, identity_prompt):
 
     if model_pick == "openai/gpt-oss-120b":
         selected_model = GPT_MODEL
-    elif model_pick == "moonshotai/kimi-k2-instruct-0905":
-        selected_model = MOONSHOT
     elif model_pick == "llama_scout":
         selected_model = LLAMA_SCOUT
     elif model_pick == "qwen":

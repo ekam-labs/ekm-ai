@@ -11,7 +11,6 @@ ALLOWED_MODELS = {
     "gemini_2.5-flash",
     "gemma_v3",
     "openai/gpt-oss-120b",
-    "moonshotai/kimi-k2-instruct-0905",
     "llama_scout",
     "qwen",
 }

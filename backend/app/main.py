@@ -1,6 +1,6 @@
 from app.schemas import ChatRequest
 from app.services.router import route_model
-from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from slowapi import Limiter
 from slowapi.errors import RateLimitExceeded

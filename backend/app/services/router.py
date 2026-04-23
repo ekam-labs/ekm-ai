@@ -16,7 +16,6 @@ def route_model(model_pick, messages):
 
     if model_pick in [
         "openai/gpt-oss-120b",
-        "moonshotai/kimi-k2-instruct-0905",
         "llama_scout",
         "qwen",
     ]:
