@@ -185,7 +185,6 @@ https://t.me/ekam_ai
 
 Planned improvements include:
 
-- Android application for mobile access
 - UI and usability improvements
 - Support for additional model providers
 - Improved deployment infrastructure

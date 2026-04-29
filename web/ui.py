@@ -145,7 +145,7 @@ def chat():
     st.sidebar.markdown("---")
 
     # Android App Button
-    st.sidebar.link_button("📱 Download Android App", "https://your-apk-link.com")
+    st.sidebar.link_button("📱 Download Android App", "https://github.com/ekam-labs/ekm_android/releases")
 
     # Divider
     st.sidebar.markdown("---")
@@ -400,7 +400,7 @@ def home():
         # 📱 Android App Download
         st.markdown("### 📱 Android App")
         st.markdown("_Take ekm AI everywhere you go._")
-        st.link_button("⬇️ Download on Android", "https://your-apk-link.com")
+        st.link_button("⬇️ Download on Android", "https://github.com/ekam-labs/ekm_android/releases")
 
         st.markdown("___")  # divider
 
@@ -529,7 +529,7 @@ def about():
         # 📱 Android App Download
         st.markdown("### 📱 Android App")
         st.markdown("_Take ekm AI everywhere you go._")
-        st.link_button("⬇️ Download on Android", "https://your-apk-link.com")
+        st.link_button("⬇️ Download on Android", "https://github.com/ekam-labs/ekm_android/releases")
 
 
 # --- RENDER CURRENT PAGE ---
