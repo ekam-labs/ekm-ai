@@ -324,7 +324,7 @@ def home():
         """
         <div class="video-container">
             <div class="rounded-video">
-                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/9mhf7VWo_8o"
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/mlFs5QjdQog"
                     title="ekm AI Intro" frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen></iframe>
