@@ -9,7 +9,6 @@ REQUEST_TIMEOUT = 20
 ALLOWED_MODELS = {
     "gemini-3-flash-preview",
     "gemini_2.5-flash",
-    "gemma_v3",
     "openai/gpt-oss-120b",
     "llama_scout",
     "qwen",

@@ -11,7 +11,7 @@ def route_model(model_pick, messages):
 
     identity_prompt = build_identity_prompt(model_pick)
 
-    if model_pick in ["gemini-3-flash-preview", "gemini_2.5-flash", "gemma_v3"]:
+    if model_pick in ["gemini-3-flash-preview", "gemini_2.5-flash"]:
         return call_gemini(model_pick, messages, identity_prompt)
 
     if model_pick in [

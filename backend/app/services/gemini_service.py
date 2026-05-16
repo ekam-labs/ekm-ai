@@ -1,5 +1,5 @@
 import requests
-from app.config import (GEMINI3_FLASH, GEMINI25_FLASH, GEMMA3, GOOGLE_API,
+from app.config import (GEMINI3_FLASH, GEMINI25_FLASH, GOOGLE_API,
                         REQUEST_TIMEOUT)
 
 
@@ -9,8 +9,6 @@ def call_gemini(model_pick, messages, identity_prompt):
         selected_model = GEMINI3_FLASH
     elif model_pick == "gemini_2.5-flash":
         selected_model = GEMINI25_FLASH
-    elif model_pick == "gemma_v3":
-        selected_model = GEMMA3
     else:
         return "Invalid Gemini model"
 
